@@ -1,0 +1,35 @@
+@CHARSET "ISO-8859-1";
+
+/*
+.overBudget {
+	color: red;
+}
+
+
+.underBudget {
+	color: green;
+}
+
+
+.currency {
+	text-align: right;
+}
+
+*/
+
+
+table {
+	margin: 1em;
+	border-collapse: collapse;
+}
+
+td,th {
+	padding: .3em;
+	border: 1px #ccc solid;
+}
+
+/*
+thead {
+	background: #fc9;
+}
+*/
