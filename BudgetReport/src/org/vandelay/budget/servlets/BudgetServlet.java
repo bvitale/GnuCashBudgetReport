@@ -36,7 +36,9 @@ public class BudgetServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BudgetCategory [] cats = BudgetManager.getCategories();
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+		BudgetCategory [] cats = BudgetManager.getCategories(startDate, endDate);
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
 	    	    
@@ -47,7 +49,7 @@ public class BudgetServlet extends HttpServlet {
 	    out.println("</HEAD>");
 	    out.println("<BODY>");
 
-    	BudgetSummaryItem[] summary = BudgetManager.summary();
+    	BudgetSummaryItem[] summary = BudgetManager.summary(startDate, endDate);
 		out.println("<TABLE style='margin: 1em; border-collapse: collapse;'>");
 		out.println("<THEAD style='background: #fc9;'>");
 		out.println("<TR><TH>Category</TH><TH>Budgeted</TH><TH>Actual</TH><TH>Difference</TH></TR>");
@@ -74,7 +76,7 @@ public class BudgetServlet extends HttpServlet {
 //    		out.println("</TBODY");
 //    		out.println("</TABLE>");
     		
-    		BudgetTransactionItem[] items = BudgetManager.getItems(item.getAccountGuid());
+    		BudgetTransactionItem[] items = BudgetManager.getItems(item.getAccountGuid(), startDate, endDate);
     		if (items.length > 0) {
         		out.println("<P>");
         		out.println("<A NAME='"+item.getName()+"'/>");

@@ -18,7 +18,7 @@ import org.vandelay.budget.model.BudgetAmount;
 import org.vandelay.budget.model.Split;
 
 public class BudgetManager {
-	public static BudgetSummaryItem [] summary() {
+	public static BudgetSummaryItem [] summary(String startDate, String endDate) {
 		List<BudgetSummaryItem> items = new ArrayList<BudgetSummaryItem>();
 		Configuration config = new Configuration().configure("/hibernate.cfg.xml");
 		SessionFactory sf = config.buildSessionFactory();
@@ -43,7 +43,7 @@ public class BudgetManager {
 			}
 			
 			// Get the splits for this acct
-			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '2011-06-01' and s.transaction.postDate < '2011-07-01'").list();
+			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '"+startDate+"' and s.transaction.postDate < '"+endDate+"'").list();
 			float actual = 0;
 			for (Split split : splits) {
 				float amount = (float) split.getValueNum() / (float) split.getValueDenom();
@@ -66,7 +66,7 @@ public class BudgetManager {
 		return items.toArray(new BudgetSummaryItem[items.size()]);
 	}
 	
-	public static BudgetTransactionItem [] getItems(String accountGuid) {
+	public static BudgetTransactionItem [] getItems(String accountGuid, String startDate, String endDate) {
 		Configuration config = new Configuration().configure("/hibernate.cfg.xml");
 		List<BudgetTransactionItem> items = new ArrayList<BudgetTransactionItem>();
 		SessionFactory sf = config.buildSessionFactory();
@@ -74,7 +74,7 @@ public class BudgetManager {
 		Account a = (Account) s.createQuery("from Account a where a.guid='"+accountGuid+"'").uniqueResult();
 		if (a != null) {
 			// Get the splits for this acct
-			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '2011-06-01' and s.transaction.postDate < '2011-07-01' order by s.transaction.postDate asc").list();
+			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '"+startDate+"' and s.transaction.postDate < '"+endDate+"' order by s.transaction.postDate asc").list();
 			for (Split split : splits) {
 				float amount = (float) split.getValueNum() / (float) split.getValueDenom();
 				String desc = split.getTransaction().getDescription();
@@ -91,7 +91,7 @@ public class BudgetManager {
 		return items.toArray(new BudgetTransactionItem[items.size()]);
 	}
 	
-	public static BudgetCategory [] getCategories() {
+	public static BudgetCategory [] getCategories(String startDate, String endDate) {
 		List<BudgetCategory> cats = new ArrayList<BudgetCategory>();
 		Configuration config = new Configuration().configure("/hibernate.cfg.xml");
 		SessionFactory sf = config.buildSessionFactory();
@@ -116,7 +116,7 @@ public class BudgetManager {
 			}
 			
 			// Get the splits for this acct
-			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '2011-06-01' and s.transaction.postDate < '2011-07-01'").list();
+			List<Split> splits = s.createQuery("from Split s where s.account = '"+a.getGuid()+"' and s.transaction.postDate >= '"+startDate+"' and s.transaction.postDate < '"+endDate+"'").list();
 			if (splits.isEmpty()) {
 				continue;
 			}
