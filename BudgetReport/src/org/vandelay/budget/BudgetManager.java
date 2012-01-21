@@ -23,12 +23,17 @@ public class BudgetManager {
 		Configuration config = new Configuration().configure("/hibernate.cfg.xml");
 		SessionFactory sf = config.buildSessionFactory();
 		Session s = sf.openSession();
-		
+		String budgetName = "BSV Budget";
 		List<String> exclusions = Arrays.asList(new String [] {
 				"2010","Dental Insurance","Group Term Life Insurance (Ben)","Health Insurance","Income Tax","Supplemental Long-Term Disability","Vision Insurance"
 		});
+		if (startDate.startsWith("2012")) {
+			budgetName = "2012 Budget";
+			exclusions = Collections.emptyList();
+		}
 		
-		Budget b = (Budget) s.createQuery("from Budget where name='BSV Budget'").uniqueResult();
+		
+		Budget b = (Budget) s.createQuery("from Budget where name='"+budgetName+"'").uniqueResult();
 		for (BudgetAmount ba : b.getAmounts()) {
 			Account a = ba.getAccount();
 			
@@ -100,8 +105,14 @@ public class BudgetManager {
 		List<String> exclusions = Arrays.asList(new String [] {
 				"2010","Dental Insurance","Group Term Life Insurance (Ben)","Health Insurance","Income Tax","Supplemental Long-Term Disability","Vision Insurance"
 		});
+
+		String budgetName = "BSV Budget";
+		if (startDate.startsWith("2012")) {
+			budgetName = "2012 Budget";
+			exclusions = Collections.emptyList();
+		}
 		
-		Budget b = (Budget) s.createQuery("from Budget where name='BSV Budget'").uniqueResult();
+		Budget b = (Budget) s.createQuery("from Budget where name='"+budgetName+"'").uniqueResult();
 		for (BudgetAmount ba : b.getAmounts()) {
 			Account a = ba.getAccount();
 			

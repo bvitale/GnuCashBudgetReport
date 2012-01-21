@@ -63,6 +63,20 @@ public class BudgetServlet extends HttpServlet {
     		out.println("<TD style='border: 1px #ccc solid; text-align: right; padding: .3em;'>"+number(item.getDifference(), true)+"</TD>");
     		out.println("</TR>");    		
     	}
+    	// 8-27-11 add totals
+    	float totalBudgeted = 0.0f;
+    	float totalSpent = 0.0f;
+    	for (BudgetSummaryItem item: summary) {
+    		totalBudgeted += item.getBudgeted();
+    		totalSpent += item.getActual();
+    	}
+    	out.println("<TR>");
+		out.println("<TD style='border: 1px #ccc solid; padding: .3em;'>TOTAL</TD>");
+		out.println("<TD style='border: 1px #ccc solid; text-align: right; padding: .3em;'>"+number(totalBudgeted)+"</TD>");
+		out.println("<TD style='border: 1px #ccc solid; text-align: right; padding: .3em;'>"+number(totalSpent)+"</TD>");
+		out.println("<TD style='border: 1px #ccc solid; text-align: right; padding: .3em;'>"+number(totalSpent-totalBudgeted, true)+"</TD>");    	
+    	out.println("</TR>");
+    	
 		out.println("</TBODY>");
 		out.println("</TABLE>");	
     	
